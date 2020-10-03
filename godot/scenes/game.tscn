@@ -28,10 +28,14 @@ autostart = true
 position = Vector2( 0, 140 )
 
 [node name="game_over_timer" type="Timer" parent="."]
+wait_time = 10.0
 one_shot = true
 autostart = true
 
 [node name="score" parent="." instance=ExtResource( 7 )]
-position = Vector2( 140, 140 )
+position = Vector2( 88, 140 )
+
+[node name="time" parent="." instance=ExtResource( 7 )]
+position = Vector2( 192, 140 )
 [connection signal="timeout" from="advance_timer" to="." method="_on_advance_timer_timeout"]
 [connection signal="timeout" from="game_over_timer" to="." method="_on_game_over_timer_timeout"]
