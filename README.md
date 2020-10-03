@@ -18,7 +18,7 @@ TODO list:
    * [x] information
  * [ ] locked tiles
  * [ ] superpowers (to be defined)
- * [ ] scoring
+ * [x] scoring
  * [ ] levels?
  * [ ] audio?
  * [ ] add a space button so the game can be played on mobile

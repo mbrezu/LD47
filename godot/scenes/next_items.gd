@@ -17,10 +17,11 @@ var _list = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$label.set_label("NEXT:")
 	for i in range(Consts.LOOKAHEAD):
 		var item = MapCell.new(randi() % Consts.TILES_COUNT + 1)
 		item.tile_instance = tile_scenes[item.tile_number - 1].instance()
-		item.tile_instance.position = Vector2(0, i * 9)
+		item.tile_instance.position = Vector2(48 + i * 9, 0)
 		add_child(item.tile_instance)
 		_list.append(item)
 
@@ -37,5 +38,5 @@ func advance():
 	add_child(item.tile_instance)
 	_list.append(item)
 	for i in range(Consts.LOOKAHEAD):
-		_list[i].tile_instance.position = Vector2(0, i * 9)
+		_list[i].tile_instance.position = Vector2(48 + i * 9, 0)
 

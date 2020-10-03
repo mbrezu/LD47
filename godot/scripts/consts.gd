@@ -1,10 +1,10 @@
 extends Node
 
 const TILES_COUNT = 7
-const MAP_ROWS = 16
-const MAP_COLUMNS = 24
+const MAP_ROWS = 17
+const MAP_COLUMNS = 32
 const START_SQUARE_ROW = 8
-const START_SQUARE_COLUMN = 12
+const START_SQUARE_COLUMN = 16
 const LOOKAHEAD = 5
 
 const REZ_X = 256

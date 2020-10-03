@@ -1,5 +1,7 @@
 extends Node2D
 
+signal segment_deleted(size, tile_number)
+
 var MapCell = load("res://scripts/map_cell.gd")
 
 var tile_scenes = [
@@ -118,6 +120,11 @@ func _add_tile_at(row, column, check_tetrominoes):
 func _delete_segment(segment):
 	for pos in segment:
 		_delete_cell(pos[0], pos[1])
+	var pos1 = segment[0]
+	emit_signal(
+		"segment_deleted", 
+		segment.size(), 
+		_map[pos1[0]][pos1[1]].tile_number)
 
 
 func _delete_cell(row, column):
