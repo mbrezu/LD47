@@ -14,3 +14,7 @@ region_rect = Rect2( 0, 0, 200.101, 158.236 )
 [node name="game_layer" type="Node2D" parent="."]
 
 [node name="menu_layer" type="Node2D" parent="."]
+
+[node name="space_block_timer" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="space_block_timer" to="." method="_on_space_block_timer_timeout"]

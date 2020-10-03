@@ -6,6 +6,7 @@ var game_scene = preload("res://scenes/game.tscn")
 
 var _state = Consts.GameState.NOTHING
 var _next_state = []
+var _fresh_state = false
 
 
 func _ready():
@@ -15,7 +16,7 @@ func _ready():
 func _process(_delta):
 	if not _next_state.empty():
 		_handle_state_transition(_state, _next_state.pop_front())
-	if Input.is_action_just_pressed("ui_select"):
+	if Input.is_action_just_pressed("ui_select") and not _fresh_state:
 		_handle_space_pressed()
 
 
@@ -37,30 +38,36 @@ func _handle_state_transition(_current, _desired):
 	match [_current, _desired]:
 		[Consts.GameState.NOTHING, Consts.GameState.MENU]:
 			_show_menu()
-			_state = _desired
+			_set_state(_desired)
 			return
 		[Consts.GameState.MENU, Consts.GameState.IN_GAME]:
 			Utils.delete_children($menu_layer)
 			_new_game()
-			_state = _desired
+			_set_state(_desired)
 			return
 		[Consts.GameState.IN_GAME, Consts.GameState.GAME_OVER]:
 			_show_game_over()
-			_state = _desired
+			_set_state(_desired)
 			return
 		[Consts.GameState.GAME_OVER, Consts.GameState.MENU]:
 			Utils.delete_children($game_layer)
 			_show_menu()
-			_state = _desired
+			_set_state(_desired)
 			return
 		[_, Consts.GameState.NOTHING]:
 			Utils.delete_children($menu_layer)
 			Utils.delete_children($game_layer)
-			_state = _desired
+			_set_state(_desired)
 			return
 	print("main: can't match state")
 	_next_state.push_back(Consts.GameState.NOTHING)
 	_next_state.push_back(_desired)
+
+
+func _set_state(desired):
+	_state = desired
+	_fresh_state = true
+	$space_block_timer.start()
 
 
 func _show_game_over():
@@ -108,3 +115,7 @@ func _show_menu():
 	panel.text_at(9, 2, "AND CRISTI_ABY")
 	panel.text_at(11, 2, "MADE FOR LUDUM DARE 47")
 
+
+
+func _on_space_block_timer_timeout():
+	_fresh_state = false
