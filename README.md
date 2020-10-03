@@ -13,5 +13,11 @@ TODO:
  * [ ] particle effects for building tiles
  * [ ] particle effects for disappearing tiles
  * [ ] menus
+   * [ ] main menu
+   * [ ] game over screen
+   * [ ] credits
+   * [ ] information
  * [ ] locked tiles
  * [ ] superpowers (to be defined)
+ * [ ] scoring
+ * [ ] levels?
