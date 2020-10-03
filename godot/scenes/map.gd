@@ -12,6 +12,17 @@ var tile_scenes = [
 	preload("res://scenes/tiles/tile_7.tscn")
 ]
 
+var edge_scenes = [
+	preload("res://scenes/edges/edge_1.tscn"),
+	preload("res://scenes/edges/edge_2.tscn"),
+	preload("res://scenes/edges/edge_3.tscn"),
+	preload("res://scenes/edges/edge_4.tscn"),
+	preload("res://scenes/edges/edge_5.tscn"),
+	preload("res://scenes/edges/edge_6.tscn"),
+	preload("res://scenes/edges/edge_7.tscn"),
+	preload("res://scenes/edges/edge_8.tscn")
+]
+
 # map, there's space for 16 rows by 24 columns
 var _map = []
 var _detect = []
@@ -24,7 +35,7 @@ func _ready():
 func add_random_tile(row, column):
 	var tile_number = randi() % 7 + 1
 	_map[row][column].tile_number = tile_number
-	_add_tile_at(row, column)
+	_add_tile_at(row, column, true)
 
 
 func map_dump():
@@ -56,26 +67,41 @@ func _initialize_map():
 			detect_row.append(false)
 		_map.append(row)
 		_detect.append(detect_row)
+	for _row_index in range(0, 16):
+		_map[_row_index][0].tile_number = 104
+		_map[_row_index][23].tile_number = 105
+	for _column_index in range(0, 24):
+		_map[0][_column_index].tile_number = 102
+		_map[15][_column_index].tile_number = 107
+	_map[0][0].tile_number = 101
+	_map[0][23].tile_number = 103
+	_map[15][0].tile_number = 106
+	_map[15][23].tile_number = 108
 	_map[8][12].tile_number = 1
 
 
 func _render_map():
 	for row in range(0, _map.size()):
 		for column in range(0, _map[row].size()):
-			_add_tile_at(row, column)
+			_add_tile_at(row, column, false)
 
 
-func _add_tile_at(row, column):
+func _add_tile_at(row, column, check_tetrominoes):
 	var tile_number = _map[row][column].tile_number
 	if tile_number == 0:
 		return
-	var tile = tile_scenes[tile_number - 1].instance()
+	var tile = null
+	if tile_number < 100:
+		tile = tile_scenes[tile_number - 1].instance()
+	else:
+		tile = edge_scenes[tile_number - 101].instance()
 	tile.position = Vector2(column * 8, row * 8)
 	_map[row][column].tile_instance = tile
 	add_child(tile)
-	var tetrominoes = _detect_tetrominoes()
-	for segment in tetrominoes:
-		_delete_segment(segment)
+	if check_tetrominoes:
+		var tetrominoes = _detect_tetrominoes()
+		for segment in tetrominoes:
+			_delete_segment(segment)
 
 
 func _delete_segment(segment):
@@ -93,7 +119,10 @@ func _detect_tetrominoes():
 	var results = []
 	for row in range(_map.size()):
 		for column in range(_map[row].size()):
-			if _map[row][column].tile_number != 0 and not _detect[row][column]:
+			var has_something = _map[row][column].tile_number > 0
+			var is_not_edge = _map[row][column].tile_number < 100
+			var is_not_detected = not _detect[row][column]
+			if has_something and is_not_edge and is_not_detected:
 				var segment = _get_segment(row, column)
 				print("found segment", segment)
 				if segment.size() >= 4:
