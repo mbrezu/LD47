@@ -112,7 +112,7 @@ func _show_menu():
 	panel.text_at(4, 2, "PRESS 'SPACE\" TO PLAY!")
 	panel.text_at(6, 2, "CONTROLS: ALSO 'SPACE\"")
 	panel.text_at(8, 2, "GAME BY MBREZU, LEONEL")
-	panel.text_at(9, 2, "AND CRISTI_ABY")
+	panel.text_at(9, 2, "CRISTI_ABY AND MOCO")
 	panel.text_at(11, 2, "MADE FOR LUDUM DARE 47")
 
 

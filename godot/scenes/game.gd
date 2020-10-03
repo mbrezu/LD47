@@ -44,7 +44,7 @@ func _on_player_died():
 	emit_signal("game_over")
 
 
-func _on_segment_deleted(size, tile_number):
+func _on_segment_deleted(size, _tile_number):
 	_score += size * size
 	$score.set_label("SCORE:" + str(_score))
 
@@ -58,5 +58,6 @@ func _on_advance_timer_timeout():
 
 
 func _on_game_over_timer_timeout():
-	_game_over = true
-	emit_signal("game_over")
+	if not _game_over:
+		_game_over = true
+		emit_signal("game_over")

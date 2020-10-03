@@ -32,9 +32,6 @@ func update_position():
 func advance():
 #	print("*** player advance")
 #	print("  direction is ", directions[direction])
-	if _is_edge(_direction):
-		emit_signal("player_died")
-		return
 	if _is_free(_direction):
 		var old_row = _row
 		_row += _directions[_direction][0]
@@ -74,12 +71,6 @@ func to_back(dir):
 	dir += 2
 	dir %= 4
 	return dir
-
-
-func _is_edge(dir):
-	return _map.is_edge(
-		_row + _directions[dir][0],
-		_column + _directions[dir][1])
 
 
 func _is_free(dir):
