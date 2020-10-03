@@ -11,9 +11,9 @@ TODO list:
  * [ ] show current path with arrows?
  * [ ] particle effects for building tiles
  * [ ] particle effects for disappearing tiles
- * [ ] menus
+ * [x] menus
    * [x] main menu
-   * [ ] game over screen
+   * [x] game over screen
    * [x] credits
    * [x] information
  * [ ] locked tiles

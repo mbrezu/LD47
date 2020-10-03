@@ -24,9 +24,16 @@ func _handle_space_pressed():
 		Consts.GameState.MENU:
 			_next_state.push_back(Consts.GameState.IN_GAME)
 			Input.action_release("ui_select")
+		Consts.GameState.GAME_OVER:
+			_next_state.push_back(Consts.GameState.MENU)
+			Input.action_release("ui_select")
 
 
 func _handle_state_transition(_current, _desired):
+	print("main: state changing from ", _current, " to ", _desired)
+	if _current == _desired:
+		print("main: same state, nothing to do")
+		return
 	match [_current, _desired]:
 		[Consts.GameState.NOTHING, Consts.GameState.MENU]:
 			_show_menu()
@@ -36,20 +43,57 @@ func _handle_state_transition(_current, _desired):
 			Utils.delete_children($menu_layer)
 			_new_game()
 			_state = _desired
-			return 
-		[_, Consts.GameState.NOTHING]:
-			Utils.delete_children($menu_layer)
+			return
+		[Consts.GameState.IN_GAME, Consts.GameState.GAME_OVER]:
+			_show_game_over()
 			_state = _desired
 			return
+		[Consts.GameState.GAME_OVER, Consts.GameState.MENU]:
+			Utils.delete_children($game_layer)
+			_show_menu()
+			_state = _desired
+			return
+		[_, Consts.GameState.NOTHING]:
+			Utils.delete_children($menu_layer)
+			Utils.delete_children($game_layer)
+			_state = _desired
+			return
+	print("main: can't match state")
 	_next_state.push_back(Consts.GameState.NOTHING)
 	_next_state.push_back(_desired)
 
 
+func _show_game_over():
+	Utils.delete_children($menu_layer)
+	var panel = panel_scene.instance()
+	panel.configure(8, 28)
+	$menu_layer.add_child(panel)
+	var game_over_messages = [
+		"GAME OVER!",
+		"Shit HAPPENS.",
+		"IT IS WHAT IT IS.",
+		"CANNOT WIN THEM ALL.",
+		"THERE IS NO PRIZE ANYWAY.",
+		"TOO MUCH 'SPACE\"."
+	]
+	var game_over_message = game_over_messages[randi() % game_over_messages.size()]
+	panel.text_at(2, 2, game_over_message)
+	panel.text_at(4, 2, "PRESS 'SPACE\" FOR THE")
+	panel.text_at(5, 2, "MAIN MENU!")
+
+
 func _new_game():
+	randomize()
 	Utils.delete_children($menu_layer)
 	Utils.delete_children($game_layer)
 	var game = game_scene.instance()
 	$game_layer.add_child(game)
+	game.connect("game_over", self, "_on_game_over")
+
+
+func _on_game_over():
+	print("main: _on_game_over")
+	_next_state.push_back(Consts.GameState.GAME_OVER)
 
 
 func _show_menu():
@@ -63,3 +107,4 @@ func _show_menu():
 	panel.text_at(8, 2, "GAME BY MBREZU, LEONEL")
 	panel.text_at(9, 2, "AND CRISTI_ABY")
 	panel.text_at(11, 2, "MADE FOR LUDUM DARE 47")
+

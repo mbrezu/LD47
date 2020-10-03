@@ -15,8 +15,8 @@ func _ready():
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_select"):
 #		player.advance()
-		Input.action_release("ui_select")
 		if not _game_over:
+			Input.action_release("ui_select")
 			_add_tile = true
 			$player.advance()
 
@@ -40,6 +40,13 @@ func _on_player_died():
 func _on_advance_timer_timeout():
 	if not _game_over:
 		$player.advance()
-	$advance_timer.wait_time -= 0.1
-	if $advance_timer.wait_time < 0.25:
-		$advance_timer.wait_time = 0.25
+	$advance_timer.wait_time -= Consts.PLAYER_ADVANCE_INTERVAL_CHANGE
+	if $advance_timer.wait_time < Consts.MIN_PLAYER_ADVANCE_INTERVAL:
+		$advance_timer.wait_time = Consts.MIN_PLAYER_ADVANCE_INTERVAL
+
+
+# just for testing menus
+func _on_game_over_timer_timeout():
+#	_game_over = true
+#	emit_signal("game_over")
+	pass

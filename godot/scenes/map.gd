@@ -48,7 +48,7 @@ func map_dump():
 func is_free(row, column):
 	if not _is_inside(row, column):
 		return false
-	return true
+	return _map[row][column].tile_number == 0
 
 
 func is_edge(row, column):
