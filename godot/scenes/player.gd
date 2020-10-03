@@ -1,7 +1,6 @@
 extends Node2D
 
 signal player_moved(old_row, old_column, new_row, new_column)
-signal player_died
 
 var _row
 var _column
@@ -13,6 +12,7 @@ var _directions = [
 	[0, 1]
 ]
 var _direction = 0
+var _target_position = null
 
 
 func configure(map):
@@ -22,11 +22,17 @@ func configure(map):
 func set_map_position(row, column):
 	_row = row
 	_column = column
-	update_position()
-
-
-func update_position():
 	position = Vector2(_column * 8, _row * 8)
+	_target_position = position
+
+
+func _update_position():
+	_target_position = Vector2(_column * 8, _row * 8)
+
+
+func _process(delta):
+	if _target_position != null:
+		position = Utils.v2_lerp(position, _target_position, delta * 16)
 
 
 func advance():
@@ -39,7 +45,7 @@ func advance():
 		_column += _directions[_direction][1]
 		emit_signal("player_moved", old_row, old_column, _row, _column)
 #		print("  new pos is ", _row, " ", _column)
-		update_position()
+		_update_position()
 	if _is_free(to_left(_direction)):
 		_direction = to_left(_direction)
 	elif _is_free(_direction):

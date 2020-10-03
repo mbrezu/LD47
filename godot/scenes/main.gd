@@ -80,7 +80,7 @@ func _show_game_over():
 		"Shit HAPPENS.",
 		"IT IS WHAT IT IS.",
 		"CANNOT WIN THEM ALL.",
-		"THERE IS NO PRIZE ANYWAY.",
+		"THERE IS NO PRIZE, ANYWAY.",
 		"TOO MUCH 'SPACE\"."
 	]
 	var game_over_message = game_over_messages[randi() % game_over_messages.size()]
