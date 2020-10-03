@@ -32,8 +32,7 @@ func _ready():
 	_render_map()
 
 
-func add_random_tile(row, column):
-	var tile_number = randi() % 7 + 1
+func add_tile(row, column, tile_number):
 	_map[row][column].tile_number = tile_number
 	_add_tile_at(row, column, true)
 
@@ -59,25 +58,25 @@ func is_free(row, column):
 func _initialize_map():
 	_map = []
 	_detect = []
-	for _row_index in range(0, 16):
+	for _row_index in range(0, Consts.MAP_ROWS):
 		var row = []
 		var detect_row = []
-		for _col_index in range(0, 24):
+		for _col_index in range(0, Consts.MAP_COLUMNS):
 			row.append(MapCell.new(0))
 			detect_row.append(false)
 		_map.append(row)
 		_detect.append(detect_row)
-	for _row_index in range(0, 16):
+	for _row_index in range(0, Consts.MAP_ROWS):
 		_map[_row_index][0].tile_number = 104
-		_map[_row_index][23].tile_number = 105
-	for _column_index in range(0, 24):
+		_map[_row_index][Consts.MAP_COLUMNS - 1].tile_number = 105
+	for _column_index in range(0, Consts.MAP_COLUMNS):
 		_map[0][_column_index].tile_number = 102
-		_map[15][_column_index].tile_number = 107
+		_map[Consts.MAP_ROWS - 1][_column_index].tile_number = 107
 	_map[0][0].tile_number = 101
-	_map[0][23].tile_number = 103
-	_map[15][0].tile_number = 106
-	_map[15][23].tile_number = 108
-	_map[8][12].tile_number = 1
+	_map[0][Consts.MAP_COLUMNS - 1].tile_number = 103
+	_map[Consts.MAP_ROWS - 1][0].tile_number = 106
+	_map[Consts.MAP_ROWS - 1][Consts.MAP_COLUMNS - 1].tile_number = 108
+	_map[Consts.START_SQUARE_ROW][Consts.START_SQUARE_COLUMN].tile_number = 1
 
 
 func _render_map():

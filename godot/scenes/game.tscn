@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/game.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphics/background.png" type="Texture" id=2]
 [ext_resource path="res://scenes/map.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/map.gd" type="Script" id=4]
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/next_items.tscn" type="PackedScene" id=6]
 
 [node name="game" type="Node2D"]
 script = ExtResource( 1 )
@@ -21,4 +22,7 @@ script = ExtResource( 4 )
 
 [node name="advance_timer" type="Timer" parent="."]
 autostart = true
+
+[node name="next_items" parent="." instance=ExtResource( 6 )]
+position = Vector2( 224, 0 )
 [connection signal="timeout" from="advance_timer" to="." method="_on_advance_timer_timeout"]
