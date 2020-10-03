@@ -22,6 +22,7 @@ func _process(_delta):
 		if not _game_over:
 			Input.action_release("ui_select")
 			_add_tile = true
+			$advance_timer.start()
 			$player.advance()
 	var rounded_time = round($game_over_timer.time_left * 10) / 10
 	$time.set_label("TIME:" + str(rounded_time))
@@ -33,8 +34,6 @@ func _on_player_moved(old_row, old_column, row, column):
 		# print("adding tile")
 		_add_tile = false
 		$game_over_timer.start()
-		$advance_timer.wait_time = Consts.PLAYER_ADVANCE_INITIAL_INTERVAL
-		$advance_timer.start()
 		$map.add_tile(old_row, old_column, $next_items.get_next_tile_number())
 		$next_items.advance()
 
@@ -47,14 +46,13 @@ func _on_player_died():
 func _on_segment_deleted(size, _tile_number):
 	_score += size * size
 	$score.set_label("SCORE:" + str(_score))
+	$advance_timer.wait_time *= 0.95
+	$advance_timer.start()
 
 
 func _on_advance_timer_timeout():
 	if not _game_over:
 		$player.advance()
-	$advance_timer.wait_time -= Consts.PLAYER_ADVANCE_INTERVAL_CHANGE
-	if $advance_timer.wait_time < Consts.MIN_PLAYER_ADVANCE_INTERVAL:
-		$advance_timer.wait_time = Consts.MIN_PLAYER_ADVANCE_INTERVAL
 
 
 func _on_game_over_timer_timeout():
