@@ -46,11 +46,23 @@ func map_dump():
 
 
 func is_free(row, column):
+	if not _is_inside(row, column):
+		return false
+	return true
+
+
+func is_edge(row, column):
+	if not _is_inside(row, column):
+		return false
+	if _map[row][column].tile_number < 100:
+		return false
+	return true
+
+
+func _is_inside(row, column):
 	if row < 0 or column < 0:
 		return false
 	if row >= _map.size() or column >= _map[row].size():
-		return false
-	if _map[row][column].tile_number > 0:
 		return false
 	return true
 
@@ -123,7 +135,7 @@ func _detect_tetrominoes():
 			var is_not_detected = not _detect[row][column]
 			if has_something and is_not_edge and is_not_detected:
 				var segment = _get_segment(row, column)
-				print("found segment", segment)
+#				print("found segment", segment)
 				if segment.size() >= 4:
 					results.append(segment)
 	return results

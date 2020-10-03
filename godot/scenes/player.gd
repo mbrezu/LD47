@@ -1,6 +1,7 @@
 extends Node2D
 
 signal player_moved(old_row, old_column, new_row, new_column)
+signal player_died
 
 var _row
 var _column
@@ -31,7 +32,10 @@ func update_position():
 func advance():
 #	print("*** player advance")
 #	print("  direction is ", directions[direction])
-	if is_free(_direction):
+	if _is_edge(_direction):
+		emit_signal("player_died")
+		return
+	if _is_free(_direction):
 		var old_row = _row
 		_row += _directions[_direction][0]
 		var old_column = _column
@@ -39,13 +43,13 @@ func advance():
 		emit_signal("player_moved", old_row, old_column, _row, _column)
 #		print("  new pos is ", _row, " ", _column)
 		update_position()
-	if is_free(to_left(_direction)):
+	if _is_free(to_left(_direction)):
 		_direction = to_left(_direction)
-	elif is_free(_direction):
+	elif _is_free(_direction):
 		pass # _direction unchanged
-	elif is_free(to_right(_direction)):
+	elif _is_free(to_right(_direction)):
 		_direction = to_right(_direction)
-	elif is_free(to_back(_direction)):
+	elif _is_free(to_back(_direction)):
 		_direction = to_back(_direction)
 	else:
 		pass # direction unchanged
@@ -72,8 +76,14 @@ func to_back(dir):
 	return dir
 
 
-func is_free(dir):
+func _is_edge(dir):
+	return _map.is_edge(
+		_row + _directions[dir][0],
+		_column + _directions[dir][1])
+
+
+func _is_free(dir):
 	return _map.is_free(
-		_row + _directions[dir][0], 
+		_row + _directions[dir][0],
 		_column + _directions[dir][1])
 

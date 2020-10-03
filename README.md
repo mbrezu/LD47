@@ -2,8 +2,7 @@
 
 This is the [Ludum Dare page](https://ldjam.com/events/ludum-dare/47/$223139).
 
-TODO:
-
+TODO list:
  * [ ] effects for disappearing tiles
  * [ ] smooth movement for player
  * [ ] player dies when touching map border
@@ -13,11 +12,13 @@ TODO:
  * [ ] particle effects for building tiles
  * [ ] particle effects for disappearing tiles
  * [ ] menus
-   * [ ] main menu
+   * [x] main menu
    * [ ] game over screen
-   * [ ] credits
-   * [ ] information
+   * [x] credits
+   * [x] information
  * [ ] locked tiles
  * [ ] superpowers (to be defined)
  * [ ] scoring
  * [ ] levels?
+ * [ ] audio?
+ * [ ] add a space button so the game can be played on mobile
