@@ -73,13 +73,7 @@ func to_back(dir):
 
 
 func is_free(dir):
-	var temp_row = _row + _directions[dir][0]
-	var temp_column = _column + _directions[dir][1]
-	if temp_row < 0 or temp_column < 0:
-		return false
-	if temp_row >= _map.size() or temp_column >= _map[temp_row].size():
-		return false
-	if _map[temp_row][temp_column].tile_number > 0:
-		return false
-	return true
+	return _map.is_free(
+		_row + _directions[dir][0], 
+		_column + _directions[dir][1])
 
