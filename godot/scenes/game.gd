@@ -47,6 +47,7 @@ func _on_player_moved(old_row, old_column, row, column):
 		_map[old_row][old_column].tile_number = tile_number
 		add_tile_at(tile_number, old_row, old_column)
 
+
 func initialize_map():
 	_map = []
 	for _row_index in range(0, 16):
