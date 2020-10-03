@@ -13,3 +13,10 @@ const REZ_Y = 150
 enum GameState { NOTHING, MENU, IN_GAME, GAME_OVER }
 
 const PLAYER_ADVANCE_INITIAL_INTERVAL = 0.5
+
+var DIRECTIONS = [
+	[-1, 0],
+	[0, -1],
+	[1, 0],
+	[0, 1]
+]

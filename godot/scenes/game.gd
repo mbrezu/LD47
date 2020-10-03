@@ -16,6 +16,7 @@ func _ready():
 	_dummy = $map.connect("segment_deleted", self, "_on_segment_deleted")
 	$score.set_label("SCORE:" + str(_score))
 
+
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_select"):
 #		player.advance()
@@ -46,7 +47,7 @@ func _on_player_died():
 func _on_segment_deleted(size, _tile_number):
 	_score += size * size
 	$score.set_label("SCORE:" + str(_score))
-	$advance_timer.wait_time *= 0.95
+	$advance_timer.wait_time *= 0.99
 	$advance_timer.start()
 
 
