@@ -3,26 +3,12 @@ extends Node2D
 signal player_moved(old_row, old_column, new_row, new_column)
 signal player_stopped
 
-class Cursor:
-	var row
-	var column
+var Cursor = load("res://scripts/cursor.gd")
 
-	func _init(p_row, p_column):
-		row = p_row
-		column = p_column
-
-	func moved(dir):
-		return Cursor.new(
-			row + Consts.DIRECTIONS[dir][0],
-			column + Consts.DIRECTIONS[dir][1])
-
-
-var _row
-var _column
 var _map
-var _direction = 0
 var _target_position = null
 var player_speed = 4
+var _cursor
 
 
 func configure(map):
@@ -30,14 +16,13 @@ func configure(map):
 
 
 func set_map_position(row, column):
-	_row = row
-	_column = column
-	position = Vector2(_column * 8, _row * 8)
+	_cursor = Cursor.new(row, column, 0)
+	position = Vector2(_cursor.column * 8, _cursor.row * 8)
 	_target_position = position
 
 
 func _update_position():
-	_target_position = Vector2(_column * 8, _row * 8)
+	_target_position = Vector2(_cursor.column * 8, _cursor.row * 8)
 
 
 func _process(delta):
@@ -49,49 +34,30 @@ func _process(delta):
 
 
 func advance():
-#	print("*** player advance")
-#	print("  direction is ", directions[direction])
-	var cursor = Cursor.new(_row, _column)
-	if _is_free(cursor.moved(_direction)):
-		var old_row = _row
-		_row += Consts.DIRECTIONS[_direction][0]
-		var old_column = _column
-		_column += Consts.DIRECTIONS[_direction][1]
-		emit_signal("player_moved", old_row, old_column, _row, _column)
+	_try_move(_cursor)
+	_rotate(_cursor)
+
+func _try_move(cursor):
+	if _is_free(cursor.clone().move()):
+		var old_cursor = cursor.clone()
+		cursor.move()
+		emit_signal("player_moved", old_cursor.row, old_cursor.column, _cursor.row, _cursor.column)
 #		print("  new pos is ", _row, " ", _column)
 		_update_position()
-		cursor = Cursor.new(_row, _column)
-	if _is_free(cursor.moved(to_left(_direction))):
-		_direction = to_left(_direction)
-	elif _is_free(cursor.moved(_direction)):
+
+
+func _rotate(cursor):
+	if _is_free(cursor.clone().turn_left().move()):
+		cursor.turn_left()
+	elif _is_free(cursor.clone().move()):
 		pass # _direction unchanged
-	elif _is_free(cursor.moved(to_right(_direction))):
-		_direction = to_right(_direction)
-	elif _is_free(cursor.moved(to_back(_direction))):
-		_direction = to_back(_direction)
+	elif _is_free(cursor.clone().turn_right().move()):
+		cursor.turn_right()
+	elif _is_free(cursor.clone().turn_back().move()):
+		cursor.turn_back()
 	else:
 		pass # direction unchanged
 #	print("  next direction ", directions[direction])
-
-
-func to_left(dir):
-	dir += 1
-	if dir == 4:
-		dir = 0
-	return dir
-
-
-func to_right(dir):
-	dir -= 1
-	if dir < 0:
-		dir = 3
-	return dir
-
-
-func to_back(dir):
-	dir += 2
-	dir %= 4
-	return dir
 
 
 func _is_free(cursor):
