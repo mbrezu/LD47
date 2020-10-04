@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://assets/graphics/background.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 153.175, 94.8818 )
 
 [node name="main" type="Node2D"]
 script = ExtResource( 1 )
@@ -17,4 +20,12 @@ region_rect = Rect2( 0, 0, 200.101, 158.236 )
 
 [node name="space_block_timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="tap_detection" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="tap_detection"]
+position = Vector2( 130.564, 78.5763 )
+shape = SubResource( 1 )
 [connection signal="timeout" from="space_block_timer" to="." method="_on_space_block_timer_timeout"]
+[connection signal="input_event" from="tap_detection" to="." method="_on_tap_detection_input_event"]
+[connection signal="input_event" from="tap_detection" to="." method="_on_Area2D_input_event"]

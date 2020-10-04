@@ -73,7 +73,7 @@ func _set_state(desired):
 func _show_game_over():
 	Utils.delete_children($menu_layer)
 	var panel = panel_scene.instance()
-	panel.configure(8, 28)
+	panel.configure(10, 29)
 	$menu_layer.add_child(panel)
 	var game_over_messages = [
 		"GAME OVER!",
@@ -81,12 +81,14 @@ func _show_game_over():
 		"IT IS WHAT IT IS.",
 		"CANNOT WIN THEM ALL.",
 		"THERE IS NO PRIZE, ANYWAY.",
-		"TOO MUCH 'SPACE\"."
+		"TOO MUCH 'SPACE\".",
+		"NOT ENOUGH 'SPACE\"."
 	]
 	var game_over_message = game_over_messages[randi() % game_over_messages.size()]
 	panel.text_at(2, 2, game_over_message)
 	panel.text_at(4, 2, "PRESS 'SPACE\" FOR THE")
 	panel.text_at(5, 2, "MAIN MENU!")
+	panel.text_at(7, 2, "- OR TAP ANYWHERE -")
 
 
 func _new_game():
@@ -106,16 +108,24 @@ func _on_game_over():
 func _show_menu():
 	Utils.delete_children($menu_layer)
 	var panel = panel_scene.instance()
-	panel.configure(14, 28)
+	panel.configure(16, 28)
 	$menu_layer.add_child(panel)
 	panel.text_at(2, 2, "LOOP SMTH SMTH")
 	panel.text_at(4, 2, "PRESS 'SPACE\" TO PLAY!")
-	panel.text_at(6, 2, "CONTROLS: ALSO 'SPACE\"")
-	panel.text_at(8, 2, "GAME BY MBREZU, LEONEL")
-	panel.text_at(9, 2, "CRISTI_ABY AND MOCO")
-	panel.text_at(11, 2, "MADE FOR LUDUM DARE 47")
+	panel.text_at(5, 2, "- OR TAP ANYWHERE -")
+	panel.text_at(7, 2, "CONTROLS: ALSO 'SPACE\"")
+	panel.text_at(8, 2, "- OR TAP ANYWHERE -")
+	panel.text_at(10, 2, "GAME BY MBREZU, LEONEL")
+	panel.text_at(11, 2, "CRISTI_ABY AND MOCO")
+	panel.text_at(13, 2, "MADE FOR LUDUM DARE 47")
 
 
 
 func _on_space_block_timer_timeout():
 	_fresh_state = false
+
+
+func _on_tap_detection_input_event(viewport, event, shape_idx):
+	if event.get_class() == "InputEventMouseButton" and event.pressed:
+		Input.action_press("ui_select")
+
