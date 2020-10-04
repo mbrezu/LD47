@@ -3,18 +3,19 @@ extends Node2D
 signal game_over
 
 var _player
-var _add_tile = false
 var _game_over = false
 var _score = 0
+var _old_player_pos = []
+
 
 func _ready():
-	$advance_timer.wait_time = Consts.PLAYER_ADVANCE_INITIAL_INTERVAL
 	$player.configure($map)
 	$player.set_map_position(Consts.START_SQUARE_ROW, Consts.START_SQUARE_COLUMN + 1)
 	var _dummy = $player.connect("player_moved", self, "_on_player_moved")
-	_dummy = $player.connect("player_died", self, "_on_player_died")
+	_dummy = $player.connect("player_stopped", self, "_on_player_stopped")
 	_dummy = $map.connect("segment_deleted", self, "_on_segment_deleted")
 	update_score_label()
+	$next_tile_marker.add_child($map.make_tile_instance($next_items.get_next_tile_number()))
 
 
 func _process(_delta):
@@ -22,9 +23,7 @@ func _process(_delta):
 #		player.advance()
 		if not _game_over:
 			Input.action_release("ui_select")
-			_add_tile = true
-			$advance_timer.start()
-			$player.advance()
+			_add_tile()
 	var rounded_time = round($game_over_timer.time_left * 10) / 10
 	var color = Color(0.2, 1, 0.2, 255)
 	if rounded_time < 3:
@@ -33,16 +32,31 @@ func _process(_delta):
 		color = Color(0.8, 0.8, 0.2, 255)
 	$time.set_color(color)
 	$time.set_label("TIME:" + str(rounded_time))
+	if _old_player_pos.size() == 2:
+		$next_tile_marker.visible = $map.is_free(
+			_old_player_pos[0], _old_player_pos[1])
 
 
-func _on_player_moved(old_row, old_column, row, column):
+func _add_tile():
+	if _old_player_pos.size() != 2:
+		return
+	if not $map.is_free(_old_player_pos[0], _old_player_pos[1]):
+		return
+	$game_over_timer.start()
+	$map.add_tile(_old_player_pos[0], _old_player_pos[1], $next_items.get_next_tile_number())
+	$next_items.advance()
+	Utils.delete_children($next_tile_marker)
+	$next_tile_marker.add_child($map.make_tile_instance($next_items.get_next_tile_number()))
+
+
+func _on_player_moved(old_row, old_column, _row, _column):
 #	print("player moved ", [old_row, old_column, row, column])
-	if _add_tile and (old_row != row or old_column != column):
-		# print("adding tile")
-		_add_tile = false
-		$game_over_timer.start()
-		$map.add_tile(old_row, old_column, $next_items.get_next_tile_number())
-		$next_items.advance()
+	_old_player_pos = [old_row, old_column]
+	$next_tile_marker.position = Vector2(old_column * 8, old_row * 8)
+
+
+func _on_player_stopped():
+	$player.advance()
 
 
 func _on_player_died():
@@ -52,18 +66,12 @@ func _on_player_died():
 
 func _on_segment_deleted(size, _tile_number):
 	_score += size * size
+	$player.player_speed *= 1.02
 	update_score_label()
-	$advance_timer.wait_time *= 0.99
-	$advance_timer.start()
 
 
 func update_score_label():
 	$score.set_label("SCORE:" + str(_score))
-
-
-func _on_advance_timer_timeout():
-	if not _game_over:
-		$player.advance()
 
 
 func _on_game_over_timer_timeout():

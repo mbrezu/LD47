@@ -39,6 +39,10 @@ func add_tile(row, column, tile_number):
 	_add_tile_at(row, column, true)
 
 
+func make_tile_instance(tile_number):
+	return tile_scenes[tile_number - 1].instance()
+
+
 func map_dump():
 	for row in _map:
 		var row_str = ""

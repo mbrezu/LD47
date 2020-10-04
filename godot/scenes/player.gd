@@ -1,6 +1,7 @@
 extends Node2D
 
 signal player_moved(old_row, old_column, new_row, new_column)
+signal player_stopped
 
 class Cursor:
 	var row
@@ -11,7 +12,6 @@ class Cursor:
 		column = p_column
 
 	func moved(dir):
-		print("cursor: ", row, " ", column)
 		return Cursor.new(
 			row + Consts.DIRECTIONS[dir][0],
 			column + Consts.DIRECTIONS[dir][1])
@@ -22,6 +22,7 @@ var _column
 var _map
 var _direction = 0
 var _target_position = null
+var player_speed = 4
 
 
 func configure(map):
@@ -41,7 +42,10 @@ func _update_position():
 
 func _process(delta):
 	if _target_position != null:
-		position = Utils.v2_lerp(position, _target_position, delta * 16)
+		position = Utils.v2_lerp(position, _target_position, delta * player_speed)
+		if position.distance_to(_target_position) < 1:
+			position = _target_position
+			emit_signal("player_stopped")
 
 
 func advance():
