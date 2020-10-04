@@ -94,7 +94,6 @@ func _initialize_map():
 	_map[0][Consts.MAP_COLUMNS - 1].tile_number = 103
 	_map[Consts.MAP_ROWS - 1][0].tile_number = 106
 	_map[Consts.MAP_ROWS - 1][Consts.MAP_COLUMNS - 1].tile_number = 108
-	_map[Consts.START_SQUARE_ROW][Consts.START_SQUARE_COLUMN].tile_number = 1
 
 
 func _render_map():

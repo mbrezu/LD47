@@ -83,7 +83,8 @@ func _on_player_died():
 
 func _on_segment_deleted(size, _tile_number):
 	_score += size * size
-	$player.player_speed *= 1.02
+	$player.player_speed *= 1.01
+	$next_items.increase_tetromino_count()
 	update_score_label()
 
 

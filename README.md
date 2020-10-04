@@ -3,6 +3,7 @@
 This is the [Ludum Dare page](https://ldjam.com/events/ludum-dare/47/$223139).
 
 TODO list:
+ * [*] make the game easier
  * [ ] effects for disappearing tiles
  * [ ] particle effects for disappearing tiles
  * [ ] audio?

@@ -117,7 +117,7 @@ func _show_menu():
 	panel.text_at(8, 2, "- OR TAP ANYWHERE -")
 	panel.color_text_at(9, 2, "TRY TO BUILD TETROMINOES", Color(0.8, 0.1, 0.1, 1.0))
 	panel.color_text_at(11, 2, "GAME BY MBREZU, LEONEL", Color(0.7, 0.7, 0.7, 1.0))
-	panel.color_text_at(12, 2, "CRISTI_ABY AND MOCO", Color(0.7, 0.7, 0.7, 1.0))
+	panel.color_text_at(12, 2, "CRISTIAN AND MOCO", Color(0.7, 0.7, 0.7, 1.0))
 	panel.color_text_at(14, 2, "MADE FOR LUDUM DARE 47", Color(0.1, 0.8, 0.1, 1.0))
 
 

@@ -20,3 +20,6 @@ var DIRECTIONS = [
 	[1, 0],
 	[0, 1]
 ]
+
+var NEXT_ITEMS_COUNTS = [0, 2, 4, 8, 16, 32, 64]
+
