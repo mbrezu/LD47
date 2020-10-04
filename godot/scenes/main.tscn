@@ -27,5 +27,5 @@ one_shot = true
 position = Vector2( 130.564, 78.5763 )
 shape = SubResource( 1 )
 [connection signal="timeout" from="space_block_timer" to="." method="_on_space_block_timer_timeout"]
-[connection signal="input_event" from="tap_detection" to="." method="_on_tap_detection_input_event"]
 [connection signal="input_event" from="tap_detection" to="." method="_on_Area2D_input_event"]
+[connection signal="input_event" from="tap_detection" to="." method="_on_tap_detection_input_event"]

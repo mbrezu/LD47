@@ -71,9 +71,9 @@ func _on_player_stopped():
 			opacity *= 0.9
 			$arrows.add_child(display)
 	
-	print("*** arrows")
-	for arrow in arrows:
-		print("  " + arrow.str())
+	# print("*** arrows")
+	# for arrow in arrows:
+	# 	print("  " + arrow.str())
 
 
 func _on_player_died():

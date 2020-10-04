@@ -33,6 +33,17 @@ func text_at(row, column, text):
 		letter.position = Vector2((column + i) * 8, row * 8)
 		_display_queue.push_back(letter)
 
+
+func color_text_at(row, column, text, color):
+	for i in range(text.length()):
+		var ch = text[i]
+		var letter = letter_scene.instance()
+		letter.set_letter(ch)
+		letter.position = Vector2((column + i) * 8, row * 8)
+		_display_queue.push_back(letter)
+		letter.modulate = color
+
+
 func _ready():
 	_build_background()
 

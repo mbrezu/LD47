@@ -21,7 +21,8 @@ func _ready():
 	for i in range(Consts.LOOKAHEAD):
 		var item = MapCell.new(randi() % Consts.TILES_COUNT + 1)
 		item.tile_instance = tile_scenes[item.tile_number - 1].instance()
-		item.tile_instance.position = Vector2(40 + i * 9, 0)
+		item.tile_instance.visible = i != 0
+		item.tile_instance.position = Vector2(40 + (i - 1) * 9, 0)
 		add_child(item.tile_instance)
 		_list.append(item)
 

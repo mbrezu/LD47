@@ -23,6 +23,8 @@ position = Vector2( 3.43878, 2.87753 )
 [node name="map" parent="." instance=ExtResource( 3 )]
 script = ExtResource( 4 )
 
+[node name="arrows" type="Node2D" parent="."]
+
 [node name="next_tile_marker" type="Node2D" parent="."]
 modulate = Color( 1, 1, 1, 0.643137 )
 position = Vector2( 0, -1 )
@@ -35,8 +37,6 @@ remote_path = NodePath("../../background/particles_player")
 
 [node name="next_items" parent="." instance=ExtResource( 6 )]
 position = Vector2( 0, 140 )
-
-[node name="arrows" type="Node2D" parent="."]
 
 [node name="game_over_timer" type="Timer" parent="."]
 wait_time = 10.0

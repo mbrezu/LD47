@@ -60,9 +60,9 @@ func get_arrows():
 	var result = []
 	while true:
 		var is_not_free = not _map.is_free(arrow_cursor.row, arrow_cursor.column)
-		var is_player = arrow_cursor.row == _cursor.row and arrow_cursor.column == _cursor.column
+		# var is_player = arrow_cursor.row == _cursor.row and arrow_cursor.column == _cursor.column
 		# var already_arrow = arrow_cursor.in_array(result)
-		if is_not_free or is_player: # and already_arrow
+		if is_not_free: # or is_player: # and already_arrow
 			break
 		if result.size() >= Consts.MAX_ARROWS:
 			break

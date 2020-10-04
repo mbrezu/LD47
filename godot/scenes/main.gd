@@ -85,7 +85,7 @@ func _show_game_over():
 		"NOT ENOUGH 'SPACE\"." #\"
 	]
 	var game_over_message = game_over_messages[randi() % game_over_messages.size()]
-	panel.text_at(2, 2, game_over_message)
+	panel.color_text_at(2, 2, game_over_message, Color(0.8, 0.1, 0.1, 1.0))
 	panel.text_at(4, 2, "PRESS 'SPACE\" FOR THE") #\"
 	panel.text_at(5, 2, "MAIN MENU!")
 	panel.text_at(7, 2, "- OR TAP ANYWHERE -")
@@ -108,17 +108,17 @@ func _on_game_over():
 func _show_menu():
 	Utils.delete_children($menu_layer)
 	var panel = panel_scene.instance()
-	panel.configure(16, 28)
+	panel.configure(17, 28)
 	$menu_layer.add_child(panel)
-	panel.text_at(2, 2, "LOOP SMTH SMTH")
+	panel.color_text_at(2, 2, "LOOP SMTH SMTH", Color(0.8, 0.8, 0.1, 1.0))
 	panel.text_at(4, 2, "PRESS 'SPACE\" TO PLAY!") #\"
 	panel.text_at(5, 2, "- OR TAP ANYWHERE -") #\"
 	panel.text_at(7, 2, "CONTROLS: ALSO 'SPACE\"") #\"
 	panel.text_at(8, 2, "- OR TAP ANYWHERE -")
-	panel.text_at(10, 2, "GAME BY MBREZU, LEONEL")
-	panel.text_at(11, 2, "CRISTI_ABY AND MOCO")
-	panel.text_at(13, 2, "MADE FOR LUDUM DARE 47")
-
+	panel.color_text_at(9, 2, "TRY TO BUILD TETROMINOES", Color(0.8, 0.1, 0.1, 1.0))
+	panel.color_text_at(11, 2, "GAME BY MBREZU, LEONEL", Color(0.7, 0.7, 0.7, 1.0))
+	panel.color_text_at(12, 2, "CRISTI_ABY AND MOCO", Color(0.7, 0.7, 0.7, 1.0))
+	panel.color_text_at(14, 2, "MADE FOR LUDUM DARE 47", Color(0.1, 0.8, 0.1, 1.0))
 
 
 func _on_space_block_timer_timeout():

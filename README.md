@@ -3,10 +3,10 @@
 This is the [Ludum Dare page](https://ldjam.com/events/ludum-dare/47/$223139).
 
 TODO list:
- * [ ] show current path with arrows?
  * [ ] effects for disappearing tiles
  * [ ] particle effects for disappearing tiles
  * [ ] audio?
+ * [x] show current path with arrows?
  * [x] add a space button so the game can be played on mobile
  * [x] smooth movement for player
  * [x] fix stuck loops WONTFIX :-D
