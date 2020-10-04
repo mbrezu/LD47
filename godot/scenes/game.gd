@@ -20,6 +20,8 @@ func _ready():
 	_dummy = $map.connect("segment_deleted", self, "_on_segment_deleted")
 	update_score_label()
 	$next_tile_marker.add_child($map.make_tile_instance($next_items.get_next_tile_number()))
+	$game_over_timer.wait_time = Consts.PLACE_TILE_TIMEOUT
+	$game_over_timer.start()
 
 
 func _process(_delta):
@@ -76,11 +78,6 @@ func _on_player_stopped():
 	# 	print("  " + arrow.str())
 
 
-func _on_player_died():
-	_game_over = true
-	emit_signal("game_over")
-
-
 func _on_segment_deleted(size, _tile_number):
 	_score += size * size
 	$player.player_speed *= 1.01
@@ -95,4 +92,6 @@ func update_score_label():
 func _on_game_over_timer_timeout():
 	if not _game_over:
 		_game_over = true
+		$player.start_death_animation()
+		yield(get_tree().create_timer(3.0), "timeout")
 		emit_signal("game_over")

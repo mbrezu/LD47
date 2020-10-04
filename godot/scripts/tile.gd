@@ -37,7 +37,6 @@ func _process(delta):
 
 
 func _on_timer_timeout():
-	print("timer_timeout")
 	_map.clear_tile(_row, _column)
 	queue_free()
 

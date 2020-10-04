@@ -6,6 +6,7 @@ const MAP_COLUMNS = 32
 const START_SQUARE_ROW = 8
 const START_SQUARE_COLUMN = 16
 const LOOKAHEAD = 6
+const PLACE_TILE_TIMEOUT = 10
 
 const MAX_ARROWS = 20
 
