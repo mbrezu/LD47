@@ -10,6 +10,9 @@ func set_label(label):
 	if _is_ready:
 		_render_letters()
 
+func set_color(color):
+	modulate = color
+
 
 func _ready():
 	_is_ready = true

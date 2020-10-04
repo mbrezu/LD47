@@ -14,7 +14,7 @@ func _ready():
 	var _dummy = $player.connect("player_moved", self, "_on_player_moved")
 	_dummy = $player.connect("player_died", self, "_on_player_died")
 	_dummy = $map.connect("segment_deleted", self, "_on_segment_deleted")
-	$score.set_label("SCORE:" + str(_score))
+	update_score_label()
 
 
 func _process(_delta):
@@ -26,6 +26,12 @@ func _process(_delta):
 			$advance_timer.start()
 			$player.advance()
 	var rounded_time = round($game_over_timer.time_left * 10) / 10
+	var color = Color(0.2, 1, 0.2, 255)
+	if rounded_time < 3:
+		color = Color(1, 0.2, 0.2, 255)
+	elif rounded_time < 6:
+		color = Color(0.8, 0.8, 0.2, 255)
+	$time.set_color(color)
 	$time.set_label("TIME:" + str(rounded_time))
 
 
@@ -46,9 +52,13 @@ func _on_player_died():
 
 func _on_segment_deleted(size, _tile_number):
 	_score += size * size
-	$score.set_label("SCORE:" + str(_score))
+	update_score_label()
 	$advance_timer.wait_time *= 0.99
 	$advance_timer.start()
+
+
+func update_score_label():
+	$score.set_label("SCORE:" + str(_score))
 
 
 func _on_advance_timer_timeout():
