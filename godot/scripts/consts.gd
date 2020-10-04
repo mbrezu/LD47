@@ -5,7 +5,7 @@ const MAP_ROWS = 17
 const MAP_COLUMNS = 32
 const START_SQUARE_ROW = 8
 const START_SQUARE_COLUMN = 16
-const LOOKAHEAD = 5
+const LOOKAHEAD = 6
 
 const REZ_X = 256
 const REZ_Y = 150

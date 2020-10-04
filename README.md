@@ -21,3 +21,4 @@ TODO list:
  * [ ] locked tiles
  * [ ] superpowers (to be defined)
  * [ ] levels?
+ * [ ] queue of next items behind player

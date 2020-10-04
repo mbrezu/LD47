@@ -38,5 +38,6 @@ func advance():
 	add_child(item.tile_instance)
 	_list.append(item)
 	for i in range(Consts.LOOKAHEAD):
-		_list[i].tile_instance.position = Vector2(40 + i * 9, 0)
+		_list[i].tile_instance.position = Vector2(40 + (i - 1) * 9, 0)
+		_list[i].tile_instance.visible = i != 0
 

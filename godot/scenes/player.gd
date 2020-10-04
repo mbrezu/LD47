@@ -33,17 +33,49 @@ func _process(delta):
 			emit_signal("player_stopped")
 
 
+func get_cursor():
+	return _cursor.clone()
+
+
 func advance():
-	_try_move(_cursor)
-	_rotate(_cursor)
+	var old_cursor = _cursor.clone()
+	if _advance_cursor(_cursor):
+		emit_signal("player_moved", old_cursor.row, old_cursor.column, _cursor.row, _cursor.column)
+	#		print("  new pos is ", _row, " ", _column)
+		_update_position()
+
+
+func _advance_cursor(cursor):
+	if _try_move(cursor):
+		_rotate(cursor)
+		return true
+	else:
+		_rotate(cursor)
+		return _try_move(cursor)
+
+
+func get_arrows():
+	var arrow_cursor = _cursor.clone()
+	_advance_cursor(arrow_cursor)
+	var result = []
+	while true:
+		var is_not_free = _map.is_free(arrow_cursor.row, arrow_cursor.column)
+		var is_player = arrow_cursor.row == _cursor.row and arrow_cursor.column == _cursor.column
+		var already_arrow = arrow_cursor.in_array(result)
+		if is_not_free or is_player or already_arrow:
+			break
+		if result.size() >= 10:
+			break
+		result.append(arrow_cursor.clone())
+		_advance_cursor(arrow_cursor)
+	return result
+
 
 func _try_move(cursor):
 	if _is_free(cursor.clone().move()):
-		var old_cursor = cursor.clone()
 		cursor.move()
-		emit_signal("player_moved", old_cursor.row, old_cursor.column, _cursor.row, _cursor.column)
-#		print("  new pos is ", _row, " ", _column)
-		_update_position()
+		return true
+	return false
 
 
 func _rotate(cursor):

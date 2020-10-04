@@ -37,3 +37,9 @@ func turn_back():
 	direction %= 4
 	return self
 
+
+func in_array(cursors):
+	for c in cursors:
+		if row == c.row and column == c.column:
+			return true
+	return false

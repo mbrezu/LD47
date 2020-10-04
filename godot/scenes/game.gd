@@ -2,6 +2,8 @@ extends Node2D
 
 signal game_over
 
+var Cursor = load("res://scripts/cursor.gd")
+
 var _player
 var _game_over = false
 var _score = 0
@@ -32,18 +34,18 @@ func _process(_delta):
 		color = Color(0.8, 0.8, 0.2, 255)
 	$time.set_color(color)
 	$time.set_label("TIME:" + str(rounded_time))
-	if _old_player_pos.size() == 2:
+	if _old_player_pos.size() > 0:
 		$next_tile_marker.visible = $map.is_free(
-			_old_player_pos[0], _old_player_pos[1])
+			_old_player_pos[0].row, _old_player_pos[0].column)
 
 
 func _add_tile():
-	if _old_player_pos.size() != 2:
+	if _old_player_pos.empty():
 		return
-	if not $map.is_free(_old_player_pos[0], _old_player_pos[1]):
+	if not $map.is_free(_old_player_pos[0].row, _old_player_pos[0].column):
 		return
 	$game_over_timer.start()
-	$map.add_tile(_old_player_pos[0], _old_player_pos[1], $next_items.get_next_tile_number())
+	$map.add_tile(_old_player_pos[0].row, _old_player_pos[0].column, $next_items.get_next_tile_number())
 	$next_items.advance()
 	Utils.delete_children($next_tile_marker)
 	$next_tile_marker.add_child($map.make_tile_instance($next_items.get_next_tile_number()))
@@ -51,12 +53,16 @@ func _add_tile():
 
 func _on_player_moved(old_row, old_column, _row, _column):
 #	print("player moved ", [old_row, old_column, row, column])
-	_old_player_pos = [old_row, old_column]
+	_old_player_pos = [Cursor.new(old_row, old_column, 0)]
 	$next_tile_marker.position = Vector2(old_column * 8, old_row * 8)
 
 
 func _on_player_stopped():
 	$player.advance()
+	var arrows = $player.get_arrows()
+	print("*** arrows")
+	for arrow in arrows:
+		print("  " + arrow.str())
 
 
 func _on_player_died():
