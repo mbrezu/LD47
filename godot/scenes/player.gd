@@ -59,12 +59,12 @@ func get_arrows():
 	_advance_cursor(arrow_cursor)
 	var result = []
 	while true:
-		var is_not_free = _map.is_free(arrow_cursor.row, arrow_cursor.column)
+		var is_not_free = not _map.is_free(arrow_cursor.row, arrow_cursor.column)
 		var is_player = arrow_cursor.row == _cursor.row and arrow_cursor.column == _cursor.column
-		var already_arrow = arrow_cursor.in_array(result)
-		if is_not_free or is_player or already_arrow:
+		# var already_arrow = arrow_cursor.in_array(result)
+		if is_not_free or is_player: # and already_arrow
 			break
-		if result.size() >= 10:
+		if result.size() >= Consts.MAX_ARROWS:
 			break
 		result.append(arrow_cursor.clone())
 		_advance_cursor(arrow_cursor)

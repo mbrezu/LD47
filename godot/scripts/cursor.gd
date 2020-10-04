@@ -43,3 +43,7 @@ func in_array(cursors):
 		if row == c.row and column == c.column:
 			return true
 	return false
+
+
+func str():
+	return str(["Cursor", row, column, direction])

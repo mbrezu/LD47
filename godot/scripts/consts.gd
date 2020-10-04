@@ -7,6 +7,8 @@ const START_SQUARE_ROW = 8
 const START_SQUARE_COLUMN = 16
 const LOOKAHEAD = 6
 
+const MAX_ARROWS = 20
+
 const REZ_X = 256
 const REZ_Y = 150
 

@@ -2,7 +2,9 @@ extends Node2D
 
 signal game_over
 
-var Cursor = load("res://scripts/cursor.gd")
+var Cursor = preload("res://scripts/cursor.gd")
+
+var arrow_display_scene = preload("res://scenes/arrow_display.tscn")
 
 var _player
 var _game_over = false
@@ -60,6 +62,15 @@ func _on_player_moved(old_row, old_column, _row, _column):
 func _on_player_stopped():
 	$player.advance()
 	var arrows = $player.get_arrows()
+	Utils.delete_children($arrows)
+	var opacity = 0.5
+	for arrow in arrows:
+		if not arrow.in_array(_old_player_pos):
+			var display = arrow_display_scene.instance()
+			display.configure(arrow, opacity)
+			opacity *= 0.9
+			$arrows.add_child(display)
+	
 	print("*** arrows")
 	for arrow in arrows:
 		print("  " + arrow.str())
