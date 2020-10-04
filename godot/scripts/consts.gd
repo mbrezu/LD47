@@ -15,12 +15,13 @@ const REZ_Y = 150
 
 enum GameState { NOTHING, MENU, IN_GAME, GAME_OVER }
 
-var DIRECTIONS = [
+const DIRECTIONS = [
 	[-1, 0],
 	[0, -1],
 	[1, 0],
 	[0, 1]
 ]
 
-var NEXT_ITEMS_COUNTS = [0, 2, 4, 8, 16, 32, 64]
+const NEXT_ITEMS_COUNTS = [0, 2, 4, 8, 16, 32, 64]
 
+const PLAYER_SPEED = 4

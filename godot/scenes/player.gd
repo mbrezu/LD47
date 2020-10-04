@@ -7,7 +7,7 @@ var Cursor = load("res://scripts/cursor.gd")
 
 var _map
 var _target_position = null
-var player_speed = 4
+var player_speed = Consts.PLAYER_SPEED
 var _cursor
 var _dead = false
 var _desired_position
