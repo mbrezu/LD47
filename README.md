@@ -3,10 +3,13 @@
 This is the [Ludum Dare page](https://ldjam.com/events/ludum-dare/47/$223139).
 
 TODO list:
- * [*] make the game easier
- * [ ] effects for disappearing tiles
- * [ ] particle effects for disappearing tiles
  * [ ] audio?
+ * [ ] player explodes on game_over
+ * [ ] locked tiles
+ * [ ] superpowers (to be defined)
+ * [ ] levels?
+ * [x] particle effects for disappearing tiles
+ * [*] make the game easier
  * [x] show current path with arrows?
  * [x] add a space button so the game can be played on mobile
  * [x] smooth movement for player
@@ -19,7 +22,3 @@ TODO list:
    * [x] game over screen
    * [x] credits
    * [x] information
- * [ ] locked tiles
- * [ ] superpowers (to be defined)
- * [ ] levels?
- * [ ] queue of next items behind player

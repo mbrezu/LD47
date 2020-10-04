@@ -34,6 +34,10 @@ func _ready():
 	_render_map()
 
 
+func clear_tile(row, column):
+	_map[row][column].tile_number = 0
+
+
 func add_tile(row, column, tile_number):
 	_map[row][column].tile_number = tile_number
 	_add_tile_at(row, column, true)
@@ -131,8 +135,8 @@ func _delete_segment(segment):
 
 
 func _delete_cell(row, column):
-	_map[row][column].tile_instance.queue_free()
-	_map[row][column].tile_number = 0
+	_map[row][column].tile_number = 200
+	_map[row][column].tile_instance.start_destroy_animation(self, row, column)
 
 
 func _detect_tetrominoes():
