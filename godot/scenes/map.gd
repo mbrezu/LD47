@@ -50,6 +50,14 @@ func make_tile_instance(tile_number):
 	return tile_scenes[tile_number - 1].instance()
 
 
+func activate_bomb():
+	for row in range(_map.size()):
+		for column in range(_map[row].size()):
+			if _map[row][column].is_locked:
+				_map[row][column].is_locked = false
+				_map[row][column].tile_instance.unlock()
+
+
 func map_dump():
 	for row in _map:
 		var row_str = ""

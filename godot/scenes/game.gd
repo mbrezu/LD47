@@ -5,6 +5,7 @@ signal game_over
 var Cursor = preload("res://scripts/cursor.gd")
 
 var arrow_display_scene = preload("res://scenes/arrow_display.tscn")
+var superpower_bomb_scene = preload("res://scenes/superpowers/bomb.tscn")
 
 var _player
 var _game_over = false
@@ -12,6 +13,7 @@ var _score = 0
 var _old_player_pos = []
 var _shake = false
 var _shake_amplitude
+var _superpowers = []
 
 
 func _ready():
@@ -24,6 +26,23 @@ func _ready():
 	$next_tile_marker.add_child($map.make_tile_instance($next_items.get_next_tile_number()))
 	$game_over_timer.wait_time = Consts.PLACE_TILE_TIMEOUT
 	$game_over_timer.start()
+	_init_superpowers()
+
+
+func _init_superpowers():
+	for _x in range(Consts.SUPERPOWERS_BOMBS_COUNT):
+		_add_bomb_superpower()
+
+
+func _add_bomb_superpower():
+	var row = 3 + randi() % (Consts.MAP_ROWS - 6)
+	var column = 3 + randi() % (Consts.MAP_COLUMNS - 6)
+	var bomb = superpower_bomb_scene.instance()
+	bomb.position = Vector2(column * 8, row * 8)
+	bomb.row = row
+	bomb.column = column
+	$superpowers.add_child(bomb)
+	_superpowers.append(bomb)
 
 
 func _process(delta):
@@ -81,10 +100,28 @@ func _add_tile():
 	$next_tile_marker.add_child($map.make_tile_instance(next_tile_number))
 
 
-func _on_player_moved(old_row, old_column, _row, _column):
+func _on_player_moved(old_row, old_column, row, column):
 #	print("player moved ", [old_row, old_column, row, column])
 	_old_player_pos = [Cursor.new(old_row, old_column, 0)]
 	$next_tile_marker.position = Vector2(old_column * 8, old_row * 8)
+	var superpower = _get_superpower(row, column)
+	if superpower != null:
+		superpower.collect()
+		match superpower.type:
+			"BOMB": _activate_bomb()
+
+
+func _get_superpower(row, column):
+	for i in range(_superpowers.size()):
+		var superpower = _superpowers[i]
+		if superpower.row == row and superpower.column == column:
+			_superpowers.remove(i)
+			return superpower
+	return null
+
+
+func _activate_bomb():
+	$map.activate_bomb()
 
 
 func _on_player_stopped():

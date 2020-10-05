@@ -13,3 +13,7 @@ texture = ExtResource( 1 )
 centered = false
 region_enabled = true
 region_rect = Rect2( 176, 8, 8, 8 )
+
+[node name="unlock_timer" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="unlock_timer" to="." method="_on_unlock_timer_timeout"]

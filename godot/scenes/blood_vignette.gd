@@ -32,7 +32,6 @@ func _process(delta):
 				_desired_value = _max
 			else:
 				_desired_value = _min
-		print(_value)
 		get_material().set_shader_param("distance_threshold", _value)
 		get_material().set_shader_param("intensity", intensity)
 	else:

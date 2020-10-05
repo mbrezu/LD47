@@ -25,6 +25,8 @@ position = Vector2( 3.43878, 2.87753 )
 [node name="map" parent="." instance=ExtResource( 3 )]
 script = ExtResource( 4 )
 
+[node name="superpowers" type="Node2D" parent="."]
+
 [node name="arrows" type="Node2D" parent="."]
 
 [node name="next_tile_marker" type="Node2D" parent="."]
