@@ -6,6 +6,8 @@ var Cursor = preload("res://scripts/cursor.gd")
 
 var arrow_display_scene = preload("res://scenes/arrow_display.tscn")
 var superpower_bomb_scene = preload("res://scenes/superpowers/bomb.tscn")
+var superpower_watch_scene = preload("res://scenes/superpowers/watch.tscn")
+var superpower_multiplier_scene = preload("res://scenes/superpowers/multiplier.tscn")
 
 var _player
 var _game_over = false
@@ -14,6 +16,7 @@ var _old_player_pos = []
 var _shake = false
 var _shake_amplitude
 var _superpowers = []
+var _score_multiplier = 1
 
 
 func _ready():
@@ -31,18 +34,22 @@ func _ready():
 
 func _init_superpowers():
 	for _x in range(Consts.SUPERPOWERS_BOMBS_COUNT):
-		_add_bomb_superpower()
+		_add_superpower(superpower_bomb_scene)
+	for _x in range(Consts.SUPERPOWERS_WATCHES_COUNT):
+		_add_superpower(superpower_watch_scene)
+	for _x in range(Consts.SUPERPOWERS_MULTIPLIERS_COUNT):
+		_add_superpower(superpower_multiplier_scene)
 
 
-func _add_bomb_superpower():
+func _add_superpower(superpower_scene):
 	var row = 3 + randi() % (Consts.MAP_ROWS - 6)
 	var column = 3 + randi() % (Consts.MAP_COLUMNS - 6)
-	var bomb = superpower_bomb_scene.instance()
-	bomb.position = Vector2(column * 8, row * 8)
-	bomb.row = row
-	bomb.column = column
-	$superpowers.add_child(bomb)
-	_superpowers.append(bomb)
+	var superpower = superpower_scene.instance()
+	superpower.position = Vector2(column * 8, row * 8)
+	superpower.row = row
+	superpower.column = column
+	$superpowers.add_child(superpower)
+	_superpowers.append(superpower)
 
 
 func _process(delta):
@@ -109,6 +116,8 @@ func _on_player_moved(old_row, old_column, row, column):
 		superpower.collect()
 		match superpower.type:
 			"BOMB": _activate_bomb()
+			"WATCH": _activate_watch()
+			"MULTIPLIER": _score_multiplier *= 2
 
 
 func _get_superpower(row, column):
@@ -122,6 +131,10 @@ func _get_superpower(row, column):
 
 func _activate_bomb():
 	$map.activate_bomb()
+
+
+func _activate_watch():
+	$player.player_speed = Consts.PLAYER_SPEED
 
 
 func _on_player_stopped():
@@ -142,8 +155,8 @@ func _on_player_stopped():
 
 
 func _on_segment_deleted(size, tile_number):
-	_score += size * size
-	$player.player_speed += 0.01 * Consts.PLAYER_SPEED
+	_score += size * size * _score_multiplier
+	$player.player_speed += 0.02 * Consts.PLAYER_SPEED
 	$next_items.increase_tetromino_count()
 	for _i in range(size):
 		$sounds.play_tile_destroyed(tile_number)
