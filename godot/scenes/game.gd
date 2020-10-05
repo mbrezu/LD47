@@ -114,6 +114,10 @@ func _on_game_over_timer_timeout():
 		_game_over = true
 		$player.start_death_animation()
 		$sounds.play_player_died()
+		_shake = true
+		_shake_amplitude = 80
+		$shake_stop_timer.wait_time = 3
+		$shake_stop_timer.start()
 		yield(get_tree().create_timer(3.0), "timeout")
 		emit_signal("game_over")
 

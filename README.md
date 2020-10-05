@@ -7,6 +7,7 @@ TODO list:
  * [ ] locked tiles
  * [ ] superpowers (to be defined)
  * [ ] levels?
+ * [x] screen shake on player death
  * [x] screen shake on tetromino exploding?
  * [x] audio?
    * [x] tile placement
