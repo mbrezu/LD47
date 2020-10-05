@@ -42,9 +42,20 @@ func _process(delta):
 		color = Color(0.8, 0.8, 0.2, 255)
 	$time.set_color(color)
 	$time.set_label("TIME:" + str(rounded_time))
+	_handle_blood_vignette(rounded_time)
 	if _old_player_pos.size() > 0:
 		$next_tile_marker.visible = $map.is_free(
 			_old_player_pos[0].row, _old_player_pos[0].column)
+
+
+func _handle_blood_vignette(rounded_time):
+	if _game_over:
+		$blood_vignette.started = false
+	else:
+		if rounded_time < 3 and not $blood_vignette.started:
+			$blood_vignette.reset()
+		$blood_vignette.started = rounded_time < 3
+		$blood_vignette.intensity = 1 + pow(3 - rounded_time, 1.5)
 
 
 func _shake_game(delta):
