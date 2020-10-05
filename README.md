@@ -3,15 +3,15 @@
 This is the [Ludum Dare page](https://ldjam.com/events/ludum-dare/47/$223139).
 
 TODO list:
- * [x] audio?
-   * [x] tile placement
-   * [x] tile exploding
-   * [x] playier dead
- * [ ] screen shake on tetromino exploding?
  * [ ] whole screen shader to warn about time running out
  * [ ] locked tiles
  * [ ] superpowers (to be defined)
  * [ ] levels?
+ * [x] screen shake on tetromino exploding?
+ * [x] audio?
+   * [x] tile placement
+   * [x] tile exploding
+   * [x] playier dead
  * [x] player explodes on game_over
  * [x] particle effects for disappearing tiles
  * [x] make the game easier

@@ -51,4 +51,8 @@ position = Vector2( 88, 140 )
 position = Vector2( 192, 140 )
 
 [node name="sounds" parent="." instance=ExtResource( 9 )]
+
+[node name="shake_stop_timer" type="Timer" parent="."]
+one_shot = true
 [connection signal="timeout" from="game_over_timer" to="." method="_on_game_over_timer_timeout"]
+[connection signal="timeout" from="shake_stop_timer" to="." method="_on_shake_stop_timer_timeout"]

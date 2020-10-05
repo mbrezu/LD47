@@ -10,6 +10,8 @@ var _player
 var _game_over = false
 var _score = 0
 var _old_player_pos = []
+var _shake = false
+var _shake_amplitude
 
 
 func _ready():
@@ -24,7 +26,9 @@ func _ready():
 	$game_over_timer.start()
 
 
-func _process(_delta):
+func _process(delta):
+	if _shake:
+		_shake_game(delta)
 	if Input.is_action_just_pressed("ui_select"):
 #		player.advance()
 		if not _game_over:
@@ -41,6 +45,13 @@ func _process(_delta):
 	if _old_player_pos.size() > 0:
 		$next_tile_marker.visible = $map.is_free(
 			_old_player_pos[0].row, _old_player_pos[0].column)
+
+
+func _shake_game(delta):
+	var angle = randf() * 2 * PI
+	var radius = _shake_amplitude * (1 + randf() * 0.5)
+	var desired_position = Vector2(radius * cos(angle), -radius * sin(angle))
+	position = Utils.v2_lerp(position, desired_position, delta * 2)
 
 
 func _add_tile():
@@ -88,6 +99,10 @@ func _on_segment_deleted(size, tile_number):
 	for _i in range(size):
 		$sounds.play_tile_destroyed(tile_number)
 	update_score_label()
+	_shake = true
+	_shake_amplitude = pow(size, 1.5) * 4
+	$shake_stop_timer.wait_time = 0.5 + randf() * 0.1 * pow(size, 1.5)
+	$shake_stop_timer.start()
 
 
 func update_score_label():
@@ -101,3 +116,9 @@ func _on_game_over_timer_timeout():
 		$sounds.play_player_died()
 		yield(get_tree().create_timer(3.0), "timeout")
 		emit_signal("game_over")
+
+
+func _on_shake_stop_timer_timeout():
+	position = Vector2(0, 0)
+	_shake = false
+
