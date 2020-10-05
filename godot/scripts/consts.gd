@@ -25,3 +25,5 @@ const DIRECTIONS = [
 const NEXT_ITEMS_COUNTS = [0, 2, 4, 8, 16, 32, 64]
 
 const PLAYER_SPEED = 4
+
+const LOCKED_REVERSE_FREQUENCY = 40

@@ -72,7 +72,8 @@ func _add_tile():
 		return
 	$game_over_timer.start()
 	var tile_number = $next_items.get_next_tile_number()
-	$map.add_tile(_old_player_pos[0].row, _old_player_pos[0].column, tile_number)
+	var is_locked = $next_items.get_next_is_locked()
+	$map.add_tile(_old_player_pos[0].row, _old_player_pos[0].column, tile_number, is_locked)
 	$sounds.play_tile_placed(tile_number)
 	$next_items.advance()
 	Utils.delete_children($next_tile_marker)

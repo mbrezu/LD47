@@ -3,10 +3,9 @@
 This is the [Ludum Dare page](https://ldjam.com/events/ludum-dare/47/$223139).
 
 TODO list:
- * [ ] whole screen shader to warn about time running out
- * [ ] locked tiles
  * [ ] superpowers (to be defined)
- * [ ] levels?
+ * [x] locked tiles
+ * [x] whole screen shader to warn about time running out
  * [x] screen shake on player death
  * [x] screen shake on tetromino exploding?
  * [x] audio?

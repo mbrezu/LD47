@@ -25,6 +25,8 @@ var edge_scenes = [
 	preload("res://scenes/edges/edge_8.tscn")
 ]
 
+var locked_tile_scene = preload("res://scenes/tiles/locked_tile.tscn")
+
 # map, there's space for 16 rows by 24 columns
 var _map = []
 var _detect = []
@@ -38,9 +40,10 @@ func clear_tile(row, column):
 	_map[row][column].tile_number = 0
 
 
-func add_tile(row, column, tile_number):
+func add_tile(row, column, tile_number, is_locked):
 	_map[row][column].tile_number = tile_number
-	_add_tile_at(row, column, true)
+	_map[row][column].is_locked = is_locked
+	_add_tile_at(row, column, true, is_locked)
 
 
 func make_tile_instance(tile_number):
@@ -103,16 +106,20 @@ func _initialize_map():
 func _render_map():
 	for row in range(0, _map.size()):
 		for column in range(0, _map[row].size()):
-			_add_tile_at(row, column, false)
+			_add_tile_at(row, column, false, false)
 
 
-func _add_tile_at(row, column, check_tetrominoes):
+func _add_tile_at(row, column, check_tetrominoes, is_locked):
 	var tile_number = _map[row][column].tile_number
 	if tile_number == 0:
 		return
 	var tile = null
 	if tile_number < 100:
 		tile = tile_scenes[tile_number - 1].instance()
+		if is_locked:
+			var locked_tile = locked_tile_scene.instance()
+			locked_tile.set_tile(tile)
+			tile = locked_tile
 	else:
 		tile = edge_scenes[tile_number - 101].instance()
 	tile.position = Vector2(column * 8, row * 8)
@@ -147,7 +154,8 @@ func _detect_tetrominoes():
 			var has_something = _map[row][column].tile_number > 0
 			var is_not_edge = _map[row][column].tile_number < 100
 			var is_not_detected = not _detect[row][column]
-			if has_something and is_not_edge and is_not_detected:
+			var is_not_locked = not _map[row][column].is_locked
+			if has_something and is_not_edge and is_not_detected and is_not_locked:
 				var segment = _get_segment(row, column)
 #				print("found segment", segment)
 				if segment.size() >= 4:
@@ -178,6 +186,8 @@ func _try_push(row, column, queue, tile_number):
 	if _detect[row][column]:
 		return
 	if _map[row][column].tile_number != tile_number:
+		return
+	if _map[row][column].is_locked:
 		return
 	queue.push_back([row, column])
 

@@ -14,10 +14,12 @@ var tile_scenes = [
 
 var _list = []
 var _tetromino_count = 0
+var _is_locked_deck = []
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_init_is_locked_deck()
 	$label.set_label("NEXT:")
 	for i in range(Consts.LOOKAHEAD):
 		var item = MapCell.new(randi() % _get_tiles_count() + 1)
@@ -28,6 +30,14 @@ func _ready():
 		_list.append(item)
 
 
+func _init_is_locked_deck():
+	_is_locked_deck = []
+	for _x in range(Consts.LOCKED_REVERSE_FREQUENCY):
+		_is_locked_deck.append(false)
+	_is_locked_deck[0] = true
+	_is_locked_deck.shuffle()
+
+
 func increase_tetromino_count():
 	_tetromino_count += 1
 
@@ -36,9 +46,16 @@ func get_next_tile_number():
 	return _list[0].tile_number
 
 
+func get_next_is_locked():
+	return _is_locked_deck[0]
+
+
 func advance():
 	_list[0].tile_instance.queue_free()
 	_list.pop_front()
+	_is_locked_deck.pop_front()
+	if _is_locked_deck.empty():
+		_init_is_locked_deck()
 	var item = MapCell.new(randi() % _get_tiles_count() + 1)
 	item.tile_instance = tile_scenes[item.tile_number - 1].instance()
 	add_child(item.tile_instance)
