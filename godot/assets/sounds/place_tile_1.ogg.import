@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/place_tile_1.ogg-8fea7435c3207413e9ab6762d8da5b62.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/place_tile_1.ogg"
+dest_files=[ "res://.import/place_tile_1.ogg-8fea7435c3207413e9ab6762d8da5b62.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

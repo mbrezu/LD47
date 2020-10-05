@@ -131,7 +131,7 @@ func _delete_segment(segment):
 	emit_signal(
 		"segment_deleted", 
 		segment.size(), 
-		_map[pos1[0]][pos1[1]].tile_number)
+		pos1[2])
 
 
 func _delete_cell(row, column):
@@ -161,7 +161,7 @@ func _get_segment(row, column):
 	var queue = [[row, column]]
 	while not queue.empty():
 		var p = queue.pop_front()
-		result.append(p)
+		result.append([p[0], p[1], tile_number])
 		_detect[p[0]][p[1]] = true
 		_try_push(p[0], p[1] + 1, queue, tile_number)
 		_try_push(p[0] + 1, p[1], queue, tile_number)

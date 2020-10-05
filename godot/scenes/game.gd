@@ -49,10 +49,13 @@ func _add_tile():
 	if not $map.is_free(_old_player_pos[0].row, _old_player_pos[0].column):
 		return
 	$game_over_timer.start()
-	$map.add_tile(_old_player_pos[0].row, _old_player_pos[0].column, $next_items.get_next_tile_number())
+	var tile_number = $next_items.get_next_tile_number()
+	$map.add_tile(_old_player_pos[0].row, _old_player_pos[0].column, tile_number)
+	$sounds.play_tile_placed(tile_number)
 	$next_items.advance()
 	Utils.delete_children($next_tile_marker)
-	$next_tile_marker.add_child($map.make_tile_instance($next_items.get_next_tile_number()))
+	var next_tile_number = $next_items.get_next_tile_number()
+	$next_tile_marker.add_child($map.make_tile_instance(next_tile_number))
 
 
 func _on_player_moved(old_row, old_column, _row, _column):
@@ -78,10 +81,12 @@ func _on_player_stopped():
 	# 	print("  " + arrow.str())
 
 
-func _on_segment_deleted(size, _tile_number):
+func _on_segment_deleted(size, tile_number):
 	_score += size * size
 	$player.player_speed += 0.01 * Consts.PLAYER_SPEED
 	$next_items.increase_tetromino_count()
+	for _i in range(size):
+		$sounds.play_tile_destroyed(tile_number)
 	update_score_label()
 
 
@@ -93,5 +98,6 @@ func _on_game_over_timer_timeout():
 	if not _game_over:
 		_game_over = true
 		$player.start_death_animation()
+		$sounds.play_player_died()
 		yield(get_tree().create_timer(3.0), "timeout")
 		emit_signal("game_over")
