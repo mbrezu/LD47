@@ -16,6 +16,8 @@ var _old_player_pos = []
 var _shake = false
 var _shake_amplitude
 var _superpowers = []
+var _superpowers_deck = []
+var _superpowers_activate_deck = []
 var _score_multiplier = 1
 
 
@@ -29,16 +31,22 @@ func _ready():
 	$next_tile_marker.add_child($map.make_tile_instance($next_items.get_next_tile_number()))
 	$game_over_timer.wait_time = Consts.PLACE_TILE_TIMEOUT
 	$game_over_timer.start()
-	_init_superpowers()
+	_init_superpowers_deck()
 
 
-func _init_superpowers():
-	for _x in range(Consts.SUPERPOWERS_BOMBS_COUNT):
-		_add_superpower(superpower_bomb_scene)
-	for _x in range(Consts.SUPERPOWERS_WATCHES_COUNT):
-		_add_superpower(superpower_watch_scene)
-	for _x in range(Consts.SUPERPOWERS_MULTIPLIERS_COUNT):
-		_add_superpower(superpower_multiplier_scene)
+func _init_superpowers_deck():
+	for _i in range(5):
+		_superpowers_deck.append(superpower_bomb_scene)
+		_superpowers_deck.append(superpower_watch_scene)
+		_superpowers_deck.append(superpower_multiplier_scene)
+	_superpowers_deck.shuffle()
+
+
+func _init_superpowers_activate_deck():
+	for _i in range(Consts.SUPERPOWERS_REVERSE_FREQUENCY):
+		_superpowers_activate_deck.append(false)
+	_superpowers_activate_deck[0] = true
+	_superpowers_activate_deck.shuffle()
 
 
 func _add_superpower(superpower_scene):
@@ -105,7 +113,15 @@ func _add_tile():
 	Utils.delete_children($next_tile_marker)
 	var next_tile_number = $next_items.get_next_tile_number()
 	$next_tile_marker.add_child($map.make_tile_instance(next_tile_number))
+	_generate_superpowers()
 
+func _generate_superpowers():
+	if _superpowers_activate_deck.empty():
+		_init_superpowers_activate_deck()
+	var activate = _superpowers_activate_deck.pop_front()
+	if activate:
+		if not _superpowers_deck.empty():
+			_add_superpower(_superpowers_deck.pop_front())
 
 func _on_player_moved(old_row, old_column, row, column):
 #	print("player moved ", [old_row, old_column, row, column])
